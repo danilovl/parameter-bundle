@@ -85,10 +85,10 @@ class BaseController extends AbstractController
         int $limit = null,
         array $options = null
     ): PaginationInterface {
-        $page = $page ?? $this->get('danilovl.get_parameter')
+        $page = $page ?? $this->get('danilovl.parameter')
                 ->get('pagination.default.page');
 
-        $limit = $limit ?? $this->get('danilovl.get_parameter')
+        $limit = $limit ?? $this->get('danilovl.parameter')
                 ->get('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');
