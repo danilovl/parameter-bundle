@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Danilovl\GetParameterBundle\Services;
+namespace Danilovl\ParameterBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class GetParameterService
+class ParameterService
 {
     /**
      * @var ContainerInterface
@@ -23,7 +23,7 @@ class GetParameterService
      * @param string $key
      * @return mixed
      */
-    public function getParameter(string $key)
+    public function get(string $key)
     {
         $keys = explode('.', $key);
         $configs = $this->container->getParameter($keys[0]);
@@ -48,7 +48,7 @@ class GetParameterService
      * @param string $key
      * @return mixed
      */
-    public function hasParameter(string $key)
+    public function has(string $key)
     {
         return $this->getParameter($key) !== null;
     }

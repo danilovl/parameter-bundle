@@ -1,5 +1,5 @@
 {
-    "name": "danilovl/get-parameter-bundle",
+    "name": "danilovl/parameter-bundle",
     "type": "symfony-bundle",
     "description": "Symfony bundle provides comfortable getting parameters from config.",
     "keywords": ["php","symfony","bundle","twig extension"],
@@ -9,7 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Danilovl\\GetParameterBundle\\": "src/" }
+        "psr-4": { "Danilovl\\ParameterBundle\\": "src/" }
     },
     "require": {
         "php": "^7.3.0",

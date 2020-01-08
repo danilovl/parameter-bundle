@@ -1,8 +1,8 @@
 services:
-  danilovl.get_parameter:
-    class: Danilovl\GetParameterBundle\Services\GetParameterService
+  danilovl.parameter:
+    class: Danilovl\ParameterBundle\Services\ParameterService
     public: true
     arguments:
       - '@service_container'
 
-  Danilovl\GetParameterBundle\Services\GetParameterService: '@danilovl.get_parameter'
+  Danilovl\ParameterBundle\Services\ParameterService: '@danilovl.parameter'

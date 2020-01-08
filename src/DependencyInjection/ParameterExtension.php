@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Danilovl\GetParameterBundle\DependencyInjection;
+namespace Danilovl\ParameterBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class GetParameterExtension extends Extension
+class ParameterExtension extends Extension
 {
     private const DIR_CONFIG = '/../Resources/config';
 

@@ -1,4 +1,4 @@
-# GetParameterBundle #
+# ParameterBundle #
 
 ## About ##
 
@@ -12,12 +12,12 @@ Symfony bundle provides comfortable getting parameters from config.
 
 ### 1. Installation
 
-Install `danilovl/get-parameter-bundle` package by Composer:
+Install `danilovl/parameter-bundle` package by Composer:
  
 ``` bash
-$ composer require danilovl/get-parameter-bundle
+$ composer require danilovl/parameter-bundle
 ```
-Add the `GetParameterBundle` to your application's bundles if does not add automatically:
+Add the `ParameterBundle` to your application's bundles if does not add automatically:
 
 ``` php
 <?php
@@ -25,7 +25,7 @@ Add the `GetParameterBundle` to your application's bundles if does not add autom
 
 return [
     // ...
-    Danilovl\GetParameterBundle\GetParameterBundle::class => ['all' => true]
+    Danilovl\ParameterBundle\ParameterBundle::class => ['all' => true]
 ];
 ```
 
@@ -86,10 +86,10 @@ class BaseController extends AbstractController
         array $options = null
     ): PaginationInterface {
         $page = $page ?? $this->get('danilovl.get_parameter')
-                ->getParameter('pagination.default.page');
+                ->get('pagination.default.page');
 
         $limit = $limit ?? $this->get('danilovl.get_parameter')
-                ->getParameter('pagination.default.limit');
+                ->get('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');
         if ($options !== null) {
@@ -112,9 +112,13 @@ Check `debug` parameter in templates.
 ```twig
 {# templates/first.html.twig #}
 
-{% if get_parameter('debug') == true %}
+{% if parameter_has('debug') == true %}
     {#some code#}
-{% endif%}
+{% endif %}
+
+{% if parameter_get('locale') == 'en' %}
+    {#some code#}
+{% endif %}
 ```
 
 Get `google api` parameters.
@@ -122,6 +126,6 @@ Get `google api` parameters.
 ```twig
 {# templates/first.html.twig #}
 
-{{ get_parameter('google.api_key') }}
-{{ get_parameter('google.analytics_code') }}
+{{ parameter_get('google.api_key') }}
+{{ parameter_get('google.analytics_code') }}
 ```
