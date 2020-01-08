@@ -34,6 +34,8 @@ return [
 Project parameters.
 
 ```yaml
+# config/services.yaml
+
 parameters:
   locale: 'en'
   debug: false
