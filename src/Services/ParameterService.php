@@ -50,6 +50,6 @@ class ParameterService
      */
     public function has(string $key)
     {
-        return $this->getParameter($key) !== null;
+        return $this->get($key) !== null;
     }
 }
