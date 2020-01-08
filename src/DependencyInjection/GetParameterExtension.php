@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class GetParameterExtension extends Extension
 {
-    public const ALIAS = 'danilovl_get_parameter';
     private const DIR_CONFIG = '/../Resources/config';
 
     /**
@@ -18,15 +17,7 @@ class GetParameterExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . self::DIR_CONFIG));
-        $loader->load('service.yaml');
+        $loader->load('services.yaml');
         $loader->load('twig.yaml');
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlias(): string
-    {
-        return self::ALIAS;
     }
 }

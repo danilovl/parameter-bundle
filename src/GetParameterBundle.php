@@ -2,7 +2,7 @@
 
 namespace Danilovl\GetParameterBundle;
 
-use Danilovl\GetParameterBundle\Twig\GetParameterExtension;
+use Danilovl\GetParameterBundle\DependencyInjection\GetParameterExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
