@@ -1,0 +1,8 @@
+services:
+  danilovl.twig.get_parameter:
+    class: Danilovl\GetParameterBundle\Twig\GetParameterExtension
+    public: false
+    arguments:
+      - '@danilovl.get_parameter'
+    tags:
+      - { name: twig.extension }
