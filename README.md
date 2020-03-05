@@ -7,8 +7,8 @@ Symfony bundle provides comfortable getting parameters from config.
 ### Requirements 
 
   * PHP 7.4.0 or higher
-  * Symfony 4.4 or higher
-  * TwigBundle 4.4 or higher
+  * Symfony 5.0 or higher
+  * TwigBundle 5.0 or higher
 
 ### 1. Installation
 
