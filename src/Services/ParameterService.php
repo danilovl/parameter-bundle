@@ -6,23 +6,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ParameterService
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+	private ContainerInterface $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
     public function get(string $key)
     {
         $keys = explode('.', $key);
@@ -44,10 +34,6 @@ class ParameterService
         return $configs;
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
     public function has(string $key)
     {
         return $this->get($key) !== null;

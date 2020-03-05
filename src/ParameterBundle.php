@@ -8,9 +8,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ParameterBundle extends Bundle
 {
-    /**
-     * @return ParameterExtension
-     */
     public function getContainerExtension(): ParameterExtension
     {
         return new ParameterExtension;
