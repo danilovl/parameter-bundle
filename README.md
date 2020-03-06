@@ -7,8 +7,8 @@ Symfony bundle provides comfortable getting parameters from config.
 ### Requirements 
 
   * PHP 7.4.0 or higher
-  * Symfony 5.0 or higher
-  * TwigBundle 5.0 or higher
+  * Symfony 4.4 or higher
+  * TwigBundle 4.4 or higher
 
 ### 1. Installation
 
@@ -58,26 +58,12 @@ Get parameters in controller.
 
 namespace App\Controller;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Query;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class BaseController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param array|Collection|Query $query
-     * @param int $page
-     * @param int $limit
-     * @param array $options
-     * @return PaginationInterface
-     *
-     * @throws LogicException
-     */
     protected function createPagination(
         Request $request,
         $query,
