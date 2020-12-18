@@ -12,7 +12,7 @@
         "psr-4": { "Danilovl\\ParameterBundle\\": "src/" }
     },
     "require": {
-        "php": "^7.4.0",
+        "php": "^8.0.0",
         "symfony/framework-bundle": "^5.0",
         "symfony/twig-bundle": "^5.0"
     }

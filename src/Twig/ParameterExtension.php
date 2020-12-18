@@ -8,11 +8,8 @@ use Twig\Extension\AbstractExtension;
 
 class ParameterExtension extends AbstractExtension
 {
-    private ParameterService $parameterService;
-
-    public function __construct(ParameterService $parameterService)
+    public function __construct(private ParameterService $parameterService)
     {
-        $this->parameterService = $parameterService;
     }
 
     public function getFunctions(): array
@@ -23,7 +20,7 @@ class ParameterExtension extends AbstractExtension
         ];
     }
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->parameterService->get($key);
     }
