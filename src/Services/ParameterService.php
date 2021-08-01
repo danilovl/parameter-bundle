@@ -3,17 +3,18 @@
 namespace Danilovl\ParameterBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ParameterService
 {
-    public function __construct(private ContainerInterface $container)
+    public function __construct(private ParameterBagInterface $parameterBag)
     {
     }
 
     public function get(string $key): mixed
     {
         $keys = explode('.', $key);
-        $configs = $this->container->getParameter($keys[0]);
+        $configs = $this->parameterBag->get($keys[0]);
         array_shift($keys);
 
         if (empty($keys)) {

@@ -8,7 +8,7 @@ return static function (ContainerConfigurator $container) {
     $container->services()
         ->set('danilovl.parameter', ParameterService::class)
         ->args([
-            service('service_container'),
+            service('parameter_bag')
         ])
         ->public()
         ->alias(ParameterService::class, 'danilovl.parameter');
