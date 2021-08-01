@@ -2,7 +2,6 @@
 
 namespace Danilovl\ParameterBundle\Services;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ParameterService
