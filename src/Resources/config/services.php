@@ -2,6 +2,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Danilovl\ParameterBundle\Services\ParameterService;
 
 return static function (ContainerConfigurator $container) {
@@ -11,5 +12,5 @@ return static function (ContainerConfigurator $container) {
             service('parameter_bag')
         ])
         ->public()
-        ->alias(ParameterService::class, 'danilovl.parameter');
+        ->alias(ParameterServiceInterface::class, 'danilovl.parameter');
 };

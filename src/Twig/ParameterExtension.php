@@ -2,13 +2,13 @@
 
 namespace Danilovl\ParameterBundle\Twig;
 
-use Danilovl\ParameterBundle\Services\ParameterService;
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 
 class ParameterExtension extends AbstractExtension
 {
-    public function __construct(private ParameterService $parameterService)
+    public function __construct(private ParameterServiceInterface $parameterService)
     {
     }
 
