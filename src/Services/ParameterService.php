@@ -2,9 +2,10 @@
 
 namespace Danilovl\ParameterBundle\Services;
 
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ParameterService
+class ParameterService implements ParameterServiceInterface
 {
     public function __construct(private ParameterBagInterface $parameterBag)
     {
