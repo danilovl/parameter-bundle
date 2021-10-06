@@ -3,6 +3,7 @@
 namespace Danilovl\ParameterBundle\Services;
 
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ParameterService implements ParameterServiceInterface
@@ -25,7 +26,7 @@ class ParameterService implements ParameterServiceInterface
             if (isset($configs[$key])) {
                 $configs = $configs[$key];
             } else {
-                return null;
+                throw new ParameterNotFoundException($key);
             }
         }
 
@@ -34,6 +35,12 @@ class ParameterService implements ParameterServiceInterface
 
     public function has(string $key): bool
     {
-        return $this->get($key) !== null;
+        try {
+            $this->get($key);
+
+            return true;
+        } catch (ParameterNotFoundException) {
+            return false;
+        }
     }
 }

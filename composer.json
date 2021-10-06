@@ -9,11 +9,21 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Danilovl\\ParameterBundle\\": "src/" }
+        "psr-4": {
+            "Danilovl\\ParameterBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Danilovl\\ParameterBundle\\Tests\\": "tests/"
+        }
     },
     "require": {
         "php": "^8.0.0",
         "symfony/framework-bundle": "^5.0",
         "symfony/twig-bundle": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2"
     }
 }

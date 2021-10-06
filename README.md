@@ -1,3 +1,5 @@
+[![phpunit](https://github.com/danilovl/parameter-bundle/actions/workflows/phpunit.yml/badge.svg)](https://github.com/danilovl/parameter-bundle/actions/workflows/phpunit.yml)
+
 # ParameterBundle #
 
 ## About ##
