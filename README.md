@@ -123,4 +123,4 @@ Get `google api` parameters.
 
 ## License
 
-The HashidsBundle is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The ParameterBundle is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
