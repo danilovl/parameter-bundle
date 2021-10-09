@@ -1,4 +1,7 @@
 [![phpunit](https://github.com/danilovl/parameter-bundle/actions/workflows/phpunit.yml/badge.svg)](https://github.com/danilovl/parameter-bundle/actions/workflows/phpunit.yml)
+[![downloads](https://img.shields.io/packagist/dt/danilovl/parameter-bundle)](https://packagist.org/packages/danilovl/parameter-bundle)
+[![latest Stable Version](https://img.shields.io/packagist/v/danilovl/parameter-bundle)](https://packagist.org/packages/danilovl/parameter-bundle)
+[![license](https://img.shields.io/packagist/l/danilovl/parameter-bundle)](https://packagist.org/packages/danilovl/parameter-bundle)
 
 # ParameterBundle #
 
@@ -117,3 +120,7 @@ Get `google api` parameters.
 {{ parameter_get('google.api_key') }}
 {{ parameter_get('google.analytics_code') }}
 ```
+
+## License
+
+The HashidsBundle is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

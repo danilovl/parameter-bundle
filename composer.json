@@ -3,6 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony bundle provides comfortable getting parameters from config.",
     "keywords": ["php","symfony","bundle","twig extension"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Vladimir Danilov"
