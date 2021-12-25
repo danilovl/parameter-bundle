@@ -12,7 +12,7 @@ class ParameterService implements ParameterServiceInterface
     {
     }
 
-    public function get(string $key): mixed
+    private function getParameter(string $key, bool $ignoreNotFound = false): mixed
     {
         $keys = explode('.', $key);
         $configs = $this->parameterBag->get($keys[0]);
@@ -26,11 +26,46 @@ class ParameterService implements ParameterServiceInterface
             if (isset($configs[$key])) {
                 $configs = $configs[$key];
             } else {
-                throw new ParameterNotFoundException($key);
+                return $ignoreNotFound ? null : throw new ParameterNotFoundException($key);
             }
         }
 
         return $configs;
+
+    }
+
+    public function get(string $key, bool $ignoreNotFound = false): mixed
+    {
+        try {
+            return $this->getParameter($key);
+        } catch (ParameterNotFoundException $parameterNotFoundException) {
+            return $ignoreNotFound ? null : throw $parameterNotFoundException;
+        }
+    }
+
+    public function getString(string $key): string
+    {
+        return $this->get($key);
+    }
+
+    public function getInt(string $key): int
+    {
+        return $this->get($key);
+    }
+
+    public function getFloat(string $key): float
+    {
+        return $this->get($key);
+    }
+
+    public function getBoolean(string $key): bool
+    {
+        return $this->get($key);
+    }
+
+    public function getArray(string $key): array
+    {
+        return $this->get($key);
     }
 
     public function has(string $key): bool

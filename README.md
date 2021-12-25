@@ -19,12 +19,13 @@ Symfony bundle provides comfortable getting parameters from config.
 
 Install `danilovl/parameter-bundle` package by Composer:
  
-``` bash
+```bash
 $ composer require danilovl/parameter-bundle
 ```
+
 Add the `ParameterBundle` to your application's bundles if does not add automatically:
 
-``` php
+```php
 <?php
 // config/bundles.php
 
@@ -34,7 +35,26 @@ return [
 ];
 ```
 
-### 2. Usage
+### 2. Available methods
+
+```php
+<?php declare(strict_types=1);
+
+namespace Danilovl\ParameterBundle\Interfaces;
+
+interface ParameterServiceInterface
+{
+    public function get(string $key, bool $ignoreNotFound = false): mixed;
+    public function getString(string $key): string;
+    public function getInt(string $key): int;
+    public function getFloat(string $key): float;
+    public function getBoolean(string $key): bool;
+    public function getArray(string $key): array;
+    public function has(string $key): bool;
+}
+```
+
+### 3. Usage
 
 Project parameters.
 
@@ -44,6 +64,8 @@ Project parameters.
 parameters:
   locale: 'en'
   debug: false
+  price: 200.00
+  volume: 0.00
   project_namespace: 'App'
   pagination:
     default:
@@ -54,7 +76,7 @@ parameters:
     analytics_code: 'UA-X000000'
 ```
 
-#### 2.1 Service
+#### 3.1 Service
 
 Get parameters in controller.
 
@@ -77,10 +99,10 @@ class BaseController extends AbstractController
         array $options = null
     ): PaginationInterface {
         $page = $page ?? $this->get('danilovl.parameter')
-                ->get('pagination.default.page');
+                ->getInt('pagination.default.page');
 
         $limit = $limit ?? $this->get('danilovl.parameter')
-                ->get('pagination.default.limit');
+                ->getInt('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');
         if ($options !== null) {
@@ -96,7 +118,56 @@ class BaseController extends AbstractController
 }
 ```
 
-#### 2.2 Twig extension
+Get parameters by DI.
+
+```php
+<?php declare(strict_types=1);
+
+namespace App\Service;
+
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
+
+class UserService
+{
+    public function __construct(private ParameterServiceInterface $parameterService)
+    {
+    }
+    
+    public function getUserRoles(): array
+    {
+        return $this->parameterService->getArray('user.roles');
+    }
+}
+```
+Ignore `ParameterNotFoundException` if parameter not exist. Method `get` return `null`.
+
+```php
+<?php declare(strict_types=1);
+
+namespace App\Service;
+
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
+
+class WidgetService
+{
+    public function __construct(private ParameterServiceInterface $parameterService)
+    {
+    }
+    
+    public function getWidgetName(): string
+    {
+        return $this->parameterService->get('widget.name', true) ?? 'default widget name';
+    }
+}
+```
+
+#### 3.2 Twig extension
 
 Check `debug` parameter in templates.
 
@@ -107,7 +178,7 @@ Check `debug` parameter in templates.
     {#some code#}
 {% endif %}
 
-{% if parameter_get('locale') == 'en' %}
+{% if parameter_get_string('locale') == 'en' %}
     {#some code#}
 {% endif %}
 ```
@@ -118,7 +189,12 @@ Get `google api` parameters.
 {# templates/first.html.twig #}
 
 {{ parameter_get('google.api_key') }}
-{{ parameter_get('google.analytics_code') }}
+
+{{ parameter_get_string('google.api_key') }}
+{{ parameter_get_string('google.analytics_code') }}
+
+{{ parameter_get_int('pagination.default.page') }}
+{{ parameter_get_int('pagination.default.limit') }}
 ```
 
 ## License
