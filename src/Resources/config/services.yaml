@@ -1,7 +1,9 @@
 services:
+  _defaults:
+    public: true
+
   danilovl.parameter:
     class: Danilovl\ParameterBundle\Services\ParameterService
-    public: true
     arguments:
       - '@parameter_bag'
 
