@@ -3,7 +3,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
-use Danilovl\ParameterBundle\Services\ParameterService;
+use Danilovl\ParameterBundle\Service\ParameterService;
 
 return static function (ContainerConfigurator $container) {
     $container->services()

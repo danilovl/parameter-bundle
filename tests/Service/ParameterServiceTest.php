@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Danilovl\ParameterBundle\Tests\Services;
+namespace Danilovl\ParameterBundle\Tests\Service;
 
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
-use Danilovl\ParameterBundle\Services\ParameterService;
+use Danilovl\ParameterBundle\Service\ParameterService;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;

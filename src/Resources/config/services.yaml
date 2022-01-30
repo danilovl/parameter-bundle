@@ -3,7 +3,7 @@ services:
     public: true
 
   danilovl.parameter:
-    class: Danilovl\ParameterBundle\Services\ParameterService
+    class: Danilovl\ParameterBundle\Service\ParameterService
     arguments:
       - '@parameter_bag'
 

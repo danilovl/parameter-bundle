@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Danilovl\ParameterBundle\Services;
+namespace Danilovl\ParameterBundle\Service;
 
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
