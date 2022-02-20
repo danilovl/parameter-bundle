@@ -31,7 +31,6 @@ class ParameterService implements ParameterServiceInterface
         }
 
         return $configs;
-
     }
 
     public function get(string $key, bool $ignoreNotFound = false): mixed
