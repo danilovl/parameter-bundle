@@ -1,8 +1,6 @@
 services:
-  danilovl.twig.parameter:
-    class: Danilovl\ParameterBundle\Twig\ParameterExtension
+  Danilovl\ParameterBundle\Twig\ParameterExtension:
     public: false
-    arguments:
-      - '@danilovl.parameter'
+    autowire: true
     tags:
       - { name: twig.extension }

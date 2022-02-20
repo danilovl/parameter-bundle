@@ -85,6 +85,7 @@ Get parameters in controller.
 
 namespace App\Controller;
 
+use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,10 +99,10 @@ class BaseController extends AbstractController
         int $limit = null,
         array $options = null
     ): PaginationInterface {
-        $page = $page ?? $this->get('danilovl.parameter')
+        $page = $page ?? $this->get(ParameterServiceInterface::class)
                 ->getInt('pagination.default.page');
 
-        $limit = $limit ?? $this->get('danilovl.parameter')
+        $limit = $limit ?? $this->get(ParameterServiceInterface::class)
                 ->getInt('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');

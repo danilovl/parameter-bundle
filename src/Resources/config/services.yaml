@@ -1,10 +1,6 @@
 services:
-  _defaults:
+  Danilovl\ParameterBundle\Service\ParameterService:
     public: true
+    autowire: true
 
-  danilovl.parameter:
-    class: Danilovl\ParameterBundle\Service\ParameterService
-    arguments:
-      - '@parameter_bag'
-
-  Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface: '@danilovl.parameter'
+  Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface: '@Danilovl\ParameterBundle\Service\ParameterService'

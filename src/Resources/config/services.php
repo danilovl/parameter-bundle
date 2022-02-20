@@ -7,10 +7,8 @@ use Danilovl\ParameterBundle\Service\ParameterService;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
-        ->set('danilovl.parameter', ParameterService::class)
-        ->args([
-            service('parameter_bag')
-        ])
+        ->set(ParameterService::class, ParameterService::class)
         ->public()
-        ->alias(ParameterServiceInterface::class, 'danilovl.parameter');
+        ->autowire()
+        ->alias(ParameterServiceInterface::class, ParameterService::class);
 };

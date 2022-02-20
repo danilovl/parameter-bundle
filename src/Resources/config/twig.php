@@ -6,11 +6,8 @@ use Danilovl\ParameterBundle\Twig\ParameterExtension;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
-        ->set('danilovl.twig.parameter', ParameterExtension::class)
-        ->args([
-            service('danilovl.parameter'),
-        ])
-        ->public()
-        ->tag('twig.extension')
-        ->alias(ParameterExtension::class, 'danilovl.twig.parameter');
+        ->set(ParameterExtension::class, ParameterExtension::class)
+        ->private()
+        ->autowire()
+        ->tag('twig.extension');
 };
