@@ -8,7 +8,7 @@ use Twig\Extension\AbstractExtension;
 
 class ParameterExtension extends AbstractExtension
 {
-    public function __construct(private ParameterServiceInterface $parameterService)
+    public function __construct(private readonly ParameterServiceInterface $parameterService)
     {
     }
 
