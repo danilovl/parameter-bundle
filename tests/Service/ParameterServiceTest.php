@@ -31,6 +31,16 @@ class ParameterServiceTest extends TestCase
     }
 
     /**
+     * @dataProvider dataKeyDelimiterSucceed
+     */
+    public function testGetDelimiterSucceed(string $key, ?string $delimiter, mixed $expectedValue): void
+    {
+        $value = $this->parameterService->get(key: $key, delimiter: $delimiter);
+
+        $this->assertEquals($expectedValue, $value);
+    }
+
+    /**
      * @dataProvider dataKeyFailed
      */
     public function testGetFailed(string $key): void
@@ -45,7 +55,7 @@ class ParameterServiceTest extends TestCase
      */
     public function testGetSucceedIgnore(string $key): void
     {
-        $value = $this->parameterService->get($key, true);
+        $value = $this->parameterService->get(key: $key, ignoreNotFound: true);
 
         $this->assertEquals(null, $value);
     }
@@ -179,6 +189,17 @@ class ParameterServiceTest extends TestCase
         yield ['pagination.default.limit', 25];
         yield ['google.api_key', 'AzT6Ga0A46K3pUAdQKLwr-zT6Ga0A46K3pUAdQKLwr'];
         yield ['google.analytics_code', 'UA-X000000'];
+    }
+
+    public function dataKeyDelimiterSucceed(): Generator
+    {
+        yield ['locale', null, 'en'];
+        yield ['debug', null, false];
+        yield ['project_namespace', null, 'App'];
+        yield ['pagination.default.page', '.', 1];
+        yield ['pagination:default:limit', ':', 25];
+        yield ['google->api_key', '->', 'AzT6Ga0A46K3pUAdQKLwr-zT6Ga0A46K3pUAdQKLwr'];
+        yield ['google#analytics_code', '#', 'UA-X000000'];
     }
 
     public function dataKeyFailed(): Generator

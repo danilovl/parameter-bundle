@@ -9,18 +9,18 @@
 
 Symfony bundle provides comfortable getting parameters from config.
 
-### Requirements 
+### Requirements
 
-  * PHP 8.1.0 or higher
-  * Symfony 6.0 or higher
-  * TwigBundle 6.0 or higher
+* PHP 8.1.0 or higher
+* Symfony 6.0 or higher
+* TwigBundle 6.0 or higher
 
 ### 1. Installation
 
 Install `danilovl/parameter-bundle` package by Composer:
- 
+
 ```bash
-$ composer require danilovl/parameter-bundle
+composer require danilovl/parameter-bundle
 ```
 
 Add the `ParameterBundle` to your application's bundles if does not add automatically:
@@ -35,6 +35,13 @@ return [
 ];
 ```
 
+You can change `delimiter` by you own `delimiter`.
+
+```yaml
+danilovl_parameter:
+  delimiter: '.'
+```
+
 ### 2. Available methods
 
 ```php
@@ -44,13 +51,13 @@ namespace Danilovl\ParameterBundle\Interfaces;
 
 interface ParameterServiceInterface
 {
-    public function get(string $key, bool $ignoreNotFound = false): mixed;
-    public function getString(string $key): string;
-    public function getInt(string $key): int;
-    public function getFloat(string $key): float;
-    public function getBoolean(string $key): bool;
-    public function getArray(string $key): array;
-    public function has(string $key): bool;
+    public function get(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed;
+    public function getString(string $key, string $delimiter = null): string;
+    public function getInt(string $key, string $delimiter = null): int;
+    public function getFloat(string $key, string $delimiter = null): float;
+    public function getBoolean(string $key, string $delimiter = null): bool;
+    public function getArray(string $key, string $delimiter = null): array;
+    public function has(string $key, string $delimiter = null): bool;
 }
 ```
 
@@ -100,7 +107,7 @@ class BaseController extends AbstractController
         array $options = null
     ): PaginationInterface {
         $page = $page ?? $this->get(ParameterServiceInterface::class)
-                ->getInt('pagination.default.page');
+                ->getInt('pagination::default::page', '::');
 
         $limit = $limit ?? $this->get(ParameterServiceInterface::class)
                 ->getInt('pagination.default.limit');
@@ -163,7 +170,7 @@ class WidgetService
     
     public function getWidgetName(): string
     {
-        return $this->parameterService->get('widget.name', true) ?? 'default widget name';
+        return $this->parameterService->get(key: 'widget.name', ignoreNotFound: true) ?? 'default widget name';
     }
 }
 ```

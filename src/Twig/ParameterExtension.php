@@ -8,9 +8,7 @@ use Twig\Extension\AbstractExtension;
 
 class ParameterExtension extends AbstractExtension
 {
-    public function __construct(private readonly ParameterServiceInterface $parameterService)
-    {
-    }
+    public function __construct(private readonly ParameterServiceInterface $parameterService) {}
 
     public function getFunctions(): array
     {
@@ -25,38 +23,38 @@ class ParameterExtension extends AbstractExtension
         ];
     }
 
-    public function get(string $key): mixed
+    public function get(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter, $ignoreNotFound);
     }
 
-    public function getString(string $key): string
+    public function getString(string $key, string $delimiter = null): string
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter);
     }
 
-    public function getInt(string $key): int
+    public function getInt(string $key, string $delimiter = null): int
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter);
     }
 
-    public function getFloat(string $key): float
+    public function getFloat(string $key, string $delimiter = null): float
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter);
     }
 
-    public function getBoolean(string $key): bool
+    public function getBoolean(string $key, string $delimiter = null): bool
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter);
     }
 
-    public function getArray(string $key): array
+    public function getArray(string $key, string $delimiter = null): array
     {
-        return $this->parameterService->get($key);
+        return $this->parameterService->get($key, $delimiter);
     }
 
-    public function has(string $key): bool
+    public function has(string $key, string $delimiter = null): bool
     {
-        return $this->parameterService->has($key);
+        return $this->parameterService->has($key, $delimiter);
     }
 }

@@ -3,7 +3,6 @@
 namespace Danilovl\ParameterBundle;
 
 use Danilovl\ParameterBundle\DependencyInjection\ParameterExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ParameterBundle extends Bundle

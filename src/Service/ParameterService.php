@@ -8,13 +8,18 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ParameterService implements ParameterServiceInterface
 {
-    public function __construct(private readonly ParameterBagInterface $parameterBag)
-    {
-    }
+    public const DEFAULT_DELIMITER = '.';
 
-    private function getParameter(string $key, bool $ignoreNotFound = false): mixed
+    public function __construct(
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly string $delimiter = self::DEFAULT_DELIMITER
+    ) {}
+
+    private function getParameter(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
     {
-        $keys = explode('.', $key);
+        $delimiter = $delimiter ?? $this->delimiter;
+
+        $keys = explode($delimiter, $key);
         $configs = $this->parameterBag->get($keys[0]);
         array_shift($keys);
 
@@ -33,44 +38,44 @@ class ParameterService implements ParameterServiceInterface
         return $configs;
     }
 
-    public function get(string $key, bool $ignoreNotFound = false): mixed
+    public function get(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
     {
         try {
-            return $this->getParameter($key);
+            return $this->getParameter($key, $delimiter, $ignoreNotFound);
         } catch (ParameterNotFoundException $parameterNotFoundException) {
             return $ignoreNotFound ? null : throw $parameterNotFoundException;
         }
     }
 
-    public function getString(string $key): string
+    public function getString(string $key, string $delimiter = null): string
     {
-        return $this->get($key);
+        return $this->get($key, $delimiter);
     }
 
-    public function getInt(string $key): int
+    public function getInt(string $key, string $delimiter = null): int
     {
-        return $this->get($key);
+        return $this->get($key, $delimiter);
     }
 
-    public function getFloat(string $key): float
+    public function getFloat(string $key, string $delimiter = null): float
     {
-        return $this->get($key);
+        return $this->get($key, $delimiter);
     }
 
-    public function getBoolean(string $key): bool
+    public function getBoolean(string $key, string $delimiter = null): bool
     {
-        return $this->get($key);
+        return $this->get($key, $delimiter);
     }
 
-    public function getArray(string $key): array
+    public function getArray(string $key, string $delimiter = null): array
     {
-        return $this->get($key);
+        return $this->get($key, $delimiter);
     }
 
-    public function has(string $key): bool
+    public function has(string $key, string $delimiter = null): bool
     {
         try {
-            $this->get($key);
+            $this->get($key, $delimiter);
 
             return true;
         } catch (ParameterNotFoundException) {
