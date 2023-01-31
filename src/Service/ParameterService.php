@@ -6,13 +6,13 @@ use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ParameterService implements ParameterServiceInterface
+readonly class ParameterService implements ParameterServiceInterface
 {
     public const DEFAULT_DELIMITER = '.';
 
     public function __construct(
-        private readonly ParameterBagInterface $parameterBag,
-        private readonly string $delimiter = self::DEFAULT_DELIMITER
+        private ParameterBagInterface $parameterBag,
+        private string $delimiter = self::DEFAULT_DELIMITER
     ) {}
 
     private function getParameter(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
