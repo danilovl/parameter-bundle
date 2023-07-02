@@ -57,7 +57,7 @@ class ParameterServiceTest extends TestCase
     {
         $value = $this->parameterService->get(key: $key, ignoreNotFound: true);
 
-        $this->assertEquals(null, $value);
+        $this->assertNull($value);
     }
 
     /**
@@ -67,7 +67,7 @@ class ParameterServiceTest extends TestCase
     {
         $isExist = $this->parameterService->has($key);
 
-        $this->assertEquals(true, $isExist);
+        $this->assertTrue($isExist);
     }
 
     /**
@@ -77,7 +77,7 @@ class ParameterServiceTest extends TestCase
     {
         $isExist = $this->parameterService->has($key);
 
-        $this->assertEquals(false, $isExist);
+        $this->assertFalse($isExist);
     }
 
     /**
