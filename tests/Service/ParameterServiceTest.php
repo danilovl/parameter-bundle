@@ -5,6 +5,7 @@ namespace Danilovl\ParameterBundle\Tests\Service;
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Danilovl\ParameterBundle\Service\ParameterService;
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -20,9 +21,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService = new ParameterService($parameterBug);
     }
 
-    /**
-     * @dataProvider dataKeySucceed
-     */
+    #[DataProvider('dataKeySucceed')]
     public function testGetSucceed(string $key, mixed $expectedValue): void
     {
         $value = $this->parameterService->get($key);
@@ -30,9 +29,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
-    /**
-     * @dataProvider dataKeyDelimiterSucceed
-     */
+    #[DataProvider('dataKeyDelimiterSucceed')]
     public function testGetDelimiterSucceed(string $key, ?string $delimiter, mixed $expectedValue): void
     {
         $value = $this->parameterService->get(key: $key, delimiter: $delimiter);
@@ -40,9 +37,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
-    /**
-     * @dataProvider dataKeyFailed
-     */
+    #[DataProvider('dataKeyFailed')]
     public function testGetFailed(string $key): void
     {
         $this->expectException(ParameterNotFoundException::class);
@@ -50,9 +45,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->get($key);
     }
 
-    /**
-     * @dataProvider dataKeyFailed
-     */
+    #[DataProvider('dataKeyFailed')]
     public function testGetSucceedIgnore(string $key): void
     {
         $value = $this->parameterService->get(key: $key, ignoreNotFound: true);
@@ -60,9 +53,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @dataProvider dataKeySucceed
-     */
+    #[DataProvider('dataKeySucceed')]
     public function testHasSucceed(string $key): void
     {
         $isExist = $this->parameterService->has($key);
@@ -70,9 +61,7 @@ class ParameterServiceTest extends TestCase
         $this->assertTrue($isExist);
     }
 
-    /**
-     * @dataProvider dataKeyFailed
-     */
+    #[DataProvider('dataKeyFailed')]
     public function testHasFailed(string $key): void
     {
         $isExist = $this->parameterService->has($key);
@@ -80,9 +69,7 @@ class ParameterServiceTest extends TestCase
         $this->assertFalse($isExist);
     }
 
-    /**
-     * @dataProvider dataKeyStringSucceed
-     */
+    #[DataProvider('dataKeyStringSucceed')]
     public function testGetStringSucceed(string $key, mixed $expectedValue): void
     {
         $string = $this->parameterService->getString($key);
@@ -90,9 +77,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $string);
     }
 
-    /**
-     * @dataProvider dataKeyStringFailed
-     */
+    #[DataProvider('dataKeyStringFailed')]
     public function testGetStringFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -100,9 +85,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getString($key);
     }
 
-    /**
-     * @dataProvider dataKeyIntSucceed
-     */
+    #[DataProvider('dataKeyIntSucceed')]
     public function testGetIntSucceed(string $key, mixed $expectedValue): void
     {
         $int = $this->parameterService->getInt($key);
@@ -110,9 +93,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $int);
     }
 
-    /**
-     * @dataProvider dataKeyIntFailed
-     */
+    #[DataProvider('dataKeyIntFailed')]
     public function testGetIntFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -120,9 +101,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getInt($key);
     }
 
-    /**
-     * @dataProvider dataKeyFloatSucceed
-     */
+    #[DataProvider('dataKeyFloatSucceed')]
     public function testGetFloatSucceed(string $key, mixed $expectedValue): void
     {
         $int = $this->parameterService->getFloat($key);
@@ -130,9 +109,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $int);
     }
 
-    /**
-     * @dataProvider dataKeyFloatFailed
-     */
+    #[DataProvider('dataKeyFloatFailed')]
     public function testGetFloatFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -140,9 +117,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getFloat($key);
     }
 
-    /**
-     * @dataProvider dataKeyBooleanSucceed
-     */
+    #[DataProvider('dataKeyBooleanSucceed')]
     public function testGetBooleanSucceed(string $key, mixed $expectedValue): void
     {
         $boolean = $this->parameterService->getBoolean($key);
@@ -150,9 +125,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $boolean);
     }
 
-    /**
-     * @dataProvider dataKeyBooleanFailed
-     */
+    #[DataProvider('dataKeyBooleanFailed')]
     public function testGetBooleanFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -160,9 +133,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getBoolean($key);
     }
 
-    /**
-     * @dataProvider dataKeyArraySucceed
-     */
+    #[DataProvider('dataKeyArraySucceed')]
     public function testGetArraySucceed(string $key, mixed $expectedValue): void
     {
         $array = $this->parameterService->getArray($key);
@@ -170,9 +141,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $array);
     }
 
-    /**
-     * @dataProvider dataKeyArrayFailed
-     */
+    #[DataProvider('dataKeyArrayFailed')]
     public function testGetArrayFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -180,7 +149,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getArray($key);
     }
 
-    public function dataKeySucceed(): Generator
+    public static function dataKeySucceed(): Generator
     {
         yield ['locale', 'en'];
         yield ['debug', false];
@@ -191,7 +160,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_code', 'UA-X000000'];
     }
 
-    public function dataKeyDelimiterSucceed(): Generator
+    public static function dataKeyDelimiterSucceed(): Generator
     {
         yield ['locale', null, 'en'];
         yield ['debug', null, false];
@@ -202,7 +171,7 @@ class ParameterServiceTest extends TestCase
         yield ['google#analytics_code', '#', 'UA-X000000'];
     }
 
-    public function dataKeyFailed(): Generator
+    public static function dataKeyFailed(): Generator
     {
         yield ['locales'];
         yield ['dug'];
@@ -213,7 +182,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_codes'];
     }
 
-    public function dataKeyStringSucceed(): Generator
+    public static function dataKeyStringSucceed(): Generator
     {
         yield ['locale', 'en'];
         yield ['project_namespace', 'App'];
@@ -221,45 +190,45 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_code', 'UA-X000000'];
     }
 
-    public function dataKeyStringFailed(): Generator
+    public static function dataKeyStringFailed(): Generator
     {
         yield ['debug'];
         yield ['pagination'];
         yield ['google'];
     }
 
-    public function dataKeyIntSucceed(): Generator
+    public static function dataKeyIntSucceed(): Generator
     {
         yield ['pagination.default.page', 1];
         yield ['pagination.default.limit', 25];
     }
 
-    public function dataKeyIntFailed(): Generator
+    public static function dataKeyIntFailed(): Generator
     {
         yield ['locale'];
         yield ['debug'];
         yield ['project_namespace'];
     }
 
-    public function dataKeyFloatSucceed(): Generator
+    public static function dataKeyFloatSucceed(): Generator
     {
         yield ['price', 200.00];
         yield ['volume', 0.00];
     }
 
-    public function dataKeyFloatFailed(): Generator
+    public static function dataKeyFloatFailed(): Generator
     {
         yield ['locale'];
         yield ['debug'];
         yield ['project_namespace'];
     }
 
-    public function dataKeyBooleanSucceed(): Generator
+    public static function dataKeyBooleanSucceed(): Generator
     {
-        yield ['debug', $this->getParameterBagData()['debug']];
+        yield ['debug', self::getParameterBagData()['debug']];
     }
 
-    public function dataKeyBooleanFailed(): Generator
+    public static function dataKeyBooleanFailed(): Generator
     {
         yield ['locale'];
         yield ['project_namespace'];
@@ -267,13 +236,13 @@ class ParameterServiceTest extends TestCase
         yield ['google'];
     }
 
-    public function dataKeyArraySucceed(): Generator
+    public static function dataKeyArraySucceed(): Generator
     {
-        yield ['pagination', $this->getParameterBagData()['pagination']];
-        yield ['google', $this->getParameterBagData()['google']];
+        yield ['pagination', self::getParameterBagData()['pagination']];
+        yield ['google', self::getParameterBagData()['google']];
     }
 
-    public function dataKeyArrayFailed(): Generator
+    public static function dataKeyArrayFailed(): Generator
     {
         yield ['locale'];
         yield ['debug'];
@@ -282,7 +251,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.api_key'];
     }
 
-    private function getParameterBagData(): array
+    private static function getParameterBagData(): array
     {
         return [
             'locale' => 'en',
@@ -298,7 +267,7 @@ class ParameterServiceTest extends TestCase
             ],
             'google' => [
                 'api_key' => 'AzT6Ga0A46K3pUAdQKLwr-zT6Ga0A46K3pUAdQKLwr',
-                'analytics_code' => 'UA-X000000',
+                'analytics_code' => 'UA-X000000'
             ]
         ];
     }
