@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 readonly class ParameterService implements ParameterServiceInterface
 {
-    public const DEFAULT_DELIMITER = '.';
+    public const string DEFAULT_DELIMITER = '.';
 
     public function __construct(
         private ParameterBagInterface $parameterBag,

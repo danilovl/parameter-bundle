@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public const ALIAS = 'danilovl_parameter';
+    public const string ALIAS = 'danilovl_parameter';
 
     public function getConfigTreeBuilder(): NodeParentInterface
     {
