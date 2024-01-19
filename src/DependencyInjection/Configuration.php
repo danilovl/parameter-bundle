@@ -17,9 +17,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('delimiter')
-            ->defaultValue(ParameterService::DEFAULT_DELIMITER)
-            ->end()
+                ->scalarNode('delimiter')
+                    ->defaultValue(ParameterService::DEFAULT_DELIMITER)
+                ->end()
             ->end();
 
         return $treeBuilder;

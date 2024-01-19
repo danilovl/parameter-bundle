@@ -2,9 +2,11 @@
 
 namespace Danilovl\ParameterBundle\Service;
 
+use Danilovl\ParameterBundle\Exception\InvalidArgumentException;
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use UnitEnum;
 
 readonly class ParameterService implements ParameterServiceInterface
 {
@@ -13,11 +15,18 @@ readonly class ParameterService implements ParameterServiceInterface
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private string $delimiter = self::DEFAULT_DELIMITER
-    ) {}
+    ) {
+        if (empty($this->delimiter)) {
+            throw new InvalidArgumentException('Delimiter cannot be null.');
+        }
+    }
 
-    private function getParameter(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
-    {
-        $delimiter = $delimiter ?? $this->delimiter;
+    private function getParameter(
+        string $key,
+        string $delimiter = null,
+        bool $ignoreNotFound = false
+    ): array|bool|string|int|float|UnitEnum|null {
+        $delimiter = empty($delimiter) ? $this->delimiter : $delimiter;
 
         $keys = explode($delimiter, $key);
         $configs = $this->parameterBag->get($keys[0]);
@@ -38,8 +47,11 @@ readonly class ParameterService implements ParameterServiceInterface
         return $configs;
     }
 
-    public function get(string $key, string $delimiter = null, bool $ignoreNotFound = false): mixed
-    {
+    public function get(
+        string $key,
+        string $delimiter = null,
+        bool $ignoreNotFound = false
+    ): array|bool|string|int|float|UnitEnum|null {
         try {
             return $this->getParameter($key, $delimiter, $ignoreNotFound);
         } catch (ParameterNotFoundException $parameterNotFoundException) {
@@ -49,27 +61,50 @@ readonly class ParameterService implements ParameterServiceInterface
 
     public function getString(string $key, string $delimiter = null): string
     {
-        return $this->get($key, $delimiter);
+        /** @var string $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
     }
 
     public function getInt(string $key, string $delimiter = null): int
     {
-        return $this->get($key, $delimiter);
+        /** @var int $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
     }
 
     public function getFloat(string $key, string $delimiter = null): float
     {
-        return $this->get($key, $delimiter);
+        /** @var float $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
     }
 
     public function getBoolean(string $key, string $delimiter = null): bool
     {
-        return $this->get($key, $delimiter);
+        /** @var boolean $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
     }
 
     public function getArray(string $key, string $delimiter = null): array
     {
-        return $this->get($key, $delimiter);
+        /** @var array $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
+    }
+
+    public function getUnitEnum(string $key, string $delimiter = null): UnitEnum
+    {
+        /** @var UnitEnum $result */
+        $result = $this->get($key, $delimiter);
+
+        return $result;
     }
 
     public function has(string $key, string $delimiter = null): bool
