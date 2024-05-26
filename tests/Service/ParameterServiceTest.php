@@ -4,6 +4,7 @@ namespace Danilovl\ParameterBundle\Tests\Service;
 
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Danilovl\ParameterBundle\Service\ParameterService;
+use Danilovl\ParameterBundle\Tests\Mock\EnumMock;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -77,6 +78,14 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $string);
     }
 
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetStringOrNullSucceed(string $key): void
+    {
+        $string = $this->parameterService->getStringOrNull($key);
+
+        $this->assertNull($string);
+    }
+
     #[DataProvider('dataKeyStringFailed')]
     public function testGetStringFailed(string $key): void
     {
@@ -93,6 +102,14 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $int);
     }
 
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetIntOrNullSucceed(string $key): void
+    {
+        $int = $this->parameterService->getIntOrNull($key);
+
+        $this->assertNull($int);
+    }
+
     #[DataProvider('dataKeyIntFailed')]
     public function testGetIntFailed(string $key): void
     {
@@ -104,9 +121,17 @@ class ParameterServiceTest extends TestCase
     #[DataProvider('dataKeyFloatSucceed')]
     public function testGetFloatSucceed(string $key, mixed $expectedValue): void
     {
-        $int = $this->parameterService->getFloat($key);
+        $float = $this->parameterService->getFloat($key);
 
-        $this->assertEquals($expectedValue, $int);
+        $this->assertEquals($expectedValue, $float);
+    }
+
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetFloatOrNullSucceed(string $key): void
+    {
+        $float = $this->parameterService->getFloatOrNull($key);
+
+        $this->assertNull($float);
     }
 
     #[DataProvider('dataKeyFloatFailed')]
@@ -125,6 +150,14 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $boolean);
     }
 
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetBooleanOrNullSucceed(string $key): void
+    {
+        $boolean = $this->parameterService->getBooleanOrNull($key);
+
+        $this->assertNull($boolean);
+    }
+
     #[DataProvider('dataKeyBooleanFailed')]
     public function testGetBooleanFailed(string $key): void
     {
@@ -141,12 +174,44 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $array);
     }
 
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetArrayOrNullSucceed(string $key): void
+    {
+        $array = $this->parameterService->getArrayOrNull($key);
+
+        $this->assertNull($array);
+    }
+
     #[DataProvider('dataKeyArrayFailed')]
     public function testGetArrayFailed(string $key): void
     {
         $this->expectException(TypeError::class);
 
         $this->parameterService->getArray($key);
+    }
+
+    #[DataProvider('dataKeyEnumSucceed')]
+    public function testGetEnumSucceed(string $key, mixed $expectedValue): void
+    {
+        $enum = $this->parameterService->getUnitEnum($key);
+
+        $this->assertEquals($expectedValue, $enum);
+    }
+
+    #[DataProvider('dataKeyOrNull')]
+    public function testGetEnumOrNullSucceed(string $key): void
+    {
+        $array = $this->parameterService->getUnitEnumOrNull($key);
+
+        $this->assertNull($array);
+    }
+
+    #[DataProvider('dataKeyEnumFailed')]
+    public function testGetEnumFailed(string $key): void
+    {
+        $this->expectException(TypeError::class);
+
+        $this->parameterService->getUnitEnum($key);
     }
 
     public static function dataKeySucceed(): Generator
@@ -251,6 +316,27 @@ class ParameterServiceTest extends TestCase
         yield ['google.api_key'];
     }
 
+    public static function dataKeyOrNull(): Generator
+    {
+        yield ['locale_null'];
+        yield ['debug_null'];
+        yield ['project_namespace_null'];
+        yield ['pagination.default.page_null'];
+        yield ['google.api_key_null'];
+    }
+
+    public static function dataKeyEnumSucceed(): Generator
+    {
+        yield ['enum_a', EnumMock::A];
+        yield ['enum_b', EnumMock::B];
+    }
+
+    public static function dataKeyEnumFailed(): Generator
+    {
+        yield ['locale'];
+        yield ['debug'];
+    }
+
     private static function getParameterBagData(): array
     {
         return [
@@ -268,7 +354,9 @@ class ParameterServiceTest extends TestCase
             'google' => [
                 'api_key' => 'AzT6Ga0A46K3pUAdQKLwr-zT6Ga0A46K3pUAdQKLwr',
                 'analytics_code' => 'UA-X000000'
-            ]
+            ],
+            'enum_a' => EnumMock::A,
+            'enum_b' => EnumMock::B
         ];
     }
 }

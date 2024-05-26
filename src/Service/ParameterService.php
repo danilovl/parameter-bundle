@@ -67,10 +67,26 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
+    public function getStringOrNull(string $key, string $delimiter = null): ?string
+    {
+        /** @var string $result */
+        $result = $this->get($key, $delimiter, true);
+
+        return $result;
+    }
+
     public function getInt(string $key, string $delimiter = null): int
     {
         /** @var int $result */
         $result = $this->get($key, $delimiter);
+
+        return $result;
+    }
+
+    public function getIntOrNull(string $key, string $delimiter = null): ?int
+    {
+        /** @var int|null $result */
+        $result = $this->get($key, $delimiter, true);
 
         return $result;
     }
@@ -83,10 +99,26 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
+    public function getFloatOrNull(string $key, string $delimiter = null): ?float
+    {
+        /** @var float|null $result */
+        $result = $this->get($key, $delimiter, true);
+
+        return $result;
+    }
+
     public function getBoolean(string $key, string $delimiter = null): bool
     {
         /** @var boolean $result */
         $result = $this->get($key, $delimiter);
+
+        return $result;
+    }
+
+    public function getBooleanOrNull(string $key, string $delimiter = null): ?bool
+    {
+        /** @var boolean|null $result */
+        $result = $this->get($key, $delimiter, true);
 
         return $result;
     }
@@ -99,10 +131,26 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
+    public function getArrayOrNull(string $key, string $delimiter = null): ?array
+    {
+        /** @var array|null $result */
+        $result = $this->get($key, $delimiter, true);
+
+        return $result;
+    }
+
     public function getUnitEnum(string $key, string $delimiter = null): UnitEnum
     {
         /** @var UnitEnum $result */
         $result = $this->get($key, $delimiter);
+
+        return $result;
+    }
+
+    public function getUnitEnumOrNull(string $key, string $delimiter = null): ?UnitEnum
+    {
+        /** @var UnitEnum|null $result */
+        $result = $this->get($key, $delimiter, true);
 
         return $result;
     }

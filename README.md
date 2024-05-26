@@ -58,13 +58,26 @@ interface ParameterServiceInterface
     ): array|bool|string|int|float|UnitEnum|null;
 
     public function getString(string $key, string $delimiter = null): string;
+    public function getStringOrNull(string $key, string $delimiter = null): ?string;
+
     public function getInt(string $key, string $delimiter = null): int;
+    public function getIntOrNull(string $key, string $delimiter = null): ?int;
+
     public function getFloat(string $key, string $delimiter = null): float;
+    public function getFloatOrNull(string $key, string $delimiter = null): ?float;
+
     public function getBoolean(string $key, string $delimiter = null): bool;
+    public function getBooleanOrNull(string $key, string $delimiter = null): ?bool;
+
     public function getArray(string $key, string $delimiter = null): array;
+    public function getArrayOrNull(string $key, string $delimiter = null): ?array;
+
     public function getUnitEnum(string $key, string $delimiter = null): UnitEnum;
+    public function getUnitEnumOrNull(string $key, string $delimiter = null): ?UnitEnum;
+
     public function has(string $key, string $delimiter = null): bool;
 }
+
 ```
 
 ### 3. Usage
@@ -182,6 +195,25 @@ class WidgetService
 ```
 
 #### 3.2 Twig extension
+
+Twig functions.
+
+```twig
+parameter_get
+parameter_get_string
+parameter_get_string_or_null
+parameter_get_int
+parameter_get_int_or_null
+parameter_get_float
+parameter_get_float_or_null
+parameter_get_boolean
+parameter_get_boolean_or_null
+parameter_get_array
+parameter_get_array_or_null
+parameter_get_unit_enum
+parameter_get_unit_enum_or_null
+parameter_has
+```
 
 Check `debug` parameter in templates.
 
