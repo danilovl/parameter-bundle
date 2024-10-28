@@ -16,7 +16,7 @@ class ParameterServiceTest extends TestCase
 {
     private ParameterServiceInterface $parameterService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $parameterBug = new ParameterBag($this->getParameterBagData());
         $this->parameterService = new ParameterService($parameterBug);

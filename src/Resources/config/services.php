@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Danilovl\ParameterBundle\Service\ParameterService;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set(ParameterService::class, ParameterService::class)
         ->public()
