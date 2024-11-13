@@ -4,9 +4,9 @@ namespace Danilovl\ParameterBundle\DependencyInjection;
 
 use Danilovl\ParameterBundle\Service\ParameterService;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class ParameterExtension extends Extension
 {
