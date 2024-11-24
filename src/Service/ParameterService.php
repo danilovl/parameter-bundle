@@ -23,7 +23,7 @@ readonly class ParameterService implements ParameterServiceInterface
 
     private function getParameter(
         string $key,
-        string $delimiter = null,
+        ?string $delimiter = null,
         bool $ignoreNotFound = false
     ): array|bool|string|int|float|UnitEnum|null {
         $delimiter = empty($delimiter) ? $this->delimiter : $delimiter;
@@ -49,7 +49,7 @@ readonly class ParameterService implements ParameterServiceInterface
 
     public function get(
         string $key,
-        string $delimiter = null,
+        ?string $delimiter = null,
         bool $ignoreNotFound = false
     ): array|bool|string|int|float|UnitEnum|null {
         try {
@@ -59,7 +59,7 @@ readonly class ParameterService implements ParameterServiceInterface
         }
     }
 
-    public function getString(string $key, string $delimiter = null): string
+    public function getString(string $key, ?string $delimiter = null): string
     {
         /** @var string $result */
         $result = $this->get($key, $delimiter);
@@ -67,7 +67,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getStringOrNull(string $key, string $delimiter = null): ?string
+    public function getStringOrNull(string $key, ?string $delimiter = null): ?string
     {
         /** @var string $result */
         $result = $this->get($key, $delimiter, true);
@@ -75,7 +75,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getInt(string $key, string $delimiter = null): int
+    public function getInt(string $key, ?string $delimiter = null): int
     {
         /** @var int $result */
         $result = $this->get($key, $delimiter);
@@ -83,7 +83,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getIntOrNull(string $key, string $delimiter = null): ?int
+    public function getIntOrNull(string $key, ?string $delimiter = null): ?int
     {
         /** @var int|null $result */
         $result = $this->get($key, $delimiter, true);
@@ -91,7 +91,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getFloat(string $key, string $delimiter = null): float
+    public function getFloat(string $key, ?string $delimiter = null): float
     {
         /** @var float $result */
         $result = $this->get($key, $delimiter);
@@ -99,7 +99,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getFloatOrNull(string $key, string $delimiter = null): ?float
+    public function getFloatOrNull(string $key, ?string $delimiter = null): ?float
     {
         /** @var float|null $result */
         $result = $this->get($key, $delimiter, true);
@@ -107,7 +107,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getBoolean(string $key, string $delimiter = null): bool
+    public function getBoolean(string $key, ?string $delimiter = null): bool
     {
         /** @var boolean $result */
         $result = $this->get($key, $delimiter);
@@ -115,7 +115,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getBooleanOrNull(string $key, string $delimiter = null): ?bool
+    public function getBooleanOrNull(string $key, ?string $delimiter = null): ?bool
     {
         /** @var boolean|null $result */
         $result = $this->get($key, $delimiter, true);
@@ -123,7 +123,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getArray(string $key, string $delimiter = null): array
+    public function getArray(string $key, ?string $delimiter = null): array
     {
         /** @var array $result */
         $result = $this->get($key, $delimiter);
@@ -131,7 +131,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getArrayOrNull(string $key, string $delimiter = null): ?array
+    public function getArrayOrNull(string $key, ?string $delimiter = null): ?array
     {
         /** @var array|null $result */
         $result = $this->get($key, $delimiter, true);
@@ -139,7 +139,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getUnitEnum(string $key, string $delimiter = null): UnitEnum
+    public function getUnitEnum(string $key, ?string $delimiter = null): UnitEnum
     {
         /** @var UnitEnum $result */
         $result = $this->get($key, $delimiter);
@@ -147,7 +147,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function getUnitEnumOrNull(string $key, string $delimiter = null): ?UnitEnum
+    public function getUnitEnumOrNull(string $key, ?string $delimiter = null): ?UnitEnum
     {
         /** @var UnitEnum|null $result */
         $result = $this->get($key, $delimiter, true);
@@ -155,7 +155,7 @@ readonly class ParameterService implements ParameterServiceInterface
         return $result;
     }
 
-    public function has(string $key, string $delimiter = null): bool
+    public function has(string $key, ?string $delimiter = null): bool
     {
         try {
             $this->get($key, $delimiter);
