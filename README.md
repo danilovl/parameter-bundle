@@ -7,7 +7,7 @@
 
 ## About ##
 
-Symfony bundle provides comfortable getting parameters from config.
+The Symfony bundle provides a convenient way to retrieve parameters from the configuration.
 
 ### Requirements
 
@@ -23,7 +23,7 @@ Install `danilovl/parameter-bundle` package by Composer:
 composer require danilovl/parameter-bundle
 ```
 
-Add the `ParameterBundle` to your application's bundles if does not add automatically:
+Add the `ParameterBundle` to your application's bundles if it is does not add automatically:
 
 ```php
 <?php
@@ -104,7 +104,7 @@ parameters:
 
 #### 3.1 Service
 
-Get parameters in controller.
+Retrieve parameters in the controller using the old traditional approach by `extending AbstractController`.
 
 ```php
 <?php declare(strict_types=1);
@@ -125,11 +125,8 @@ class BaseController extends AbstractController
         int $limit = null,
         array $options = null
     ): PaginationInterface {
-        $page = $page ?? $this->get(ParameterServiceInterface::class)
-                ->getInt('pagination::default::page', '::');
-
-        $limit = $limit ?? $this->get(ParameterServiceInterface::class)
-                ->getInt('pagination.default.limit');
+        $page = $page ?? $this->get(ParameterServiceInterface::class)->getInt('pagination::default::page', '::');
+        $limit = $limit ?? $this->get(ParameterServiceInterface::class)->getInt('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');
         if ($options !== null) {
@@ -145,7 +142,7 @@ class BaseController extends AbstractController
 }
 ```
 
-Get parameters by DI.
+More preferable way to retrieve parameters using Dependency Injection.
 
 ```php
 <?php declare(strict_types=1);
@@ -163,12 +160,23 @@ class UserService
     {
     }
     
+    public function getUserId(): array
+    {
+        return $this->parameterService->getInt('user.id');
+    } 
+
+    public function getUserAdminUsers(): ?array
+    {
+        return $this->parameterService->getArrayOrNull('user.admin_users');
+    } 
+
     public function getUserRoles(): array
     {
         return $this->parameterService->getArray('user.roles');
     }
 }
 ```
+
 Ignore `ParameterNotFoundException` if parameter not exist. Method `get` return `null`.
 
 ```php
