@@ -11,8 +11,7 @@ The Symfony bundle provides a convenient way to retrieve parameters from the con
 
 ### IDE Plugin
 
-There is an IDE plugin available for this bundle that provides auto-completion and parameter search assistance in your JetBrains IDE:
-https://github.com/danilovl/parameter-bundle-plugin
+There is a [PHPStorm IDE plugin](https://github.com/danilovl/parameter-bundle-plugin) available for this bundle that provides auto-completion and parameter search assistance in your IDE.
 
 ### Requirements
 
