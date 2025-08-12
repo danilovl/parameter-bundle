@@ -9,6 +9,11 @@
 
 The Symfony bundle provides a convenient way to retrieve parameters from the configuration.
 
+### IDE Plugin
+
+There is an IDE plugin available for this bundle that provides auto-completion and parameter search assistance in your JetBrains IDE:
+https://github.com/danilovl/parameter-bundle-plugin
+
 ### Requirements
 
 * PHP 8.3 or higher
@@ -17,13 +22,13 @@ The Symfony bundle provides a convenient way to retrieve parameters from the con
 
 ### 1. Installation
 
-Install `danilovl/parameter-bundle` package by Composer:
+Install the `danilovl/parameter-bundle` package via Composer:
 
 ```bash
 composer require danilovl/parameter-bundle
 ```
 
-Add the `ParameterBundle` to your application's bundles if it is does not add automatically:
+Add the `ParameterBundle` to your application's bundles if it is not added automatically:
 
 ```php
 <?php
@@ -35,7 +40,7 @@ return [
 ];
 ```
 
-You can change `delimiter` by you own `delimiter`.
+You can change the delimiter to your own value:
 
 ```yaml
 danilovl_parameter:
@@ -82,7 +87,7 @@ interface ParameterServiceInterface
 
 ### 3. Usage
 
-Project parameters.
+Project parameters:
 
 ```yaml
 # config/services.yaml
@@ -104,7 +109,7 @@ parameters:
 
 #### 3.1 Service
 
-Retrieve parameters in the controller using the old traditional approach by `extending AbstractController`.
+Retrieve parameters in the controller using the traditional approach by extending `AbstractController`.
 
 ```php
 <?php declare(strict_types=1);
@@ -142,7 +147,7 @@ class BaseController extends AbstractController
 }
 ```
 
-More preferable way to retrieve parameters using Dependency Injection.
+A more preferable way to retrieve parameters is by using dependency injection.
 
 ```php
 <?php declare(strict_types=1);
@@ -160,7 +165,7 @@ class UserService
     {
     }
     
-    public function getUserId(): array
+    public function getUserId(): int
     {
         return $this->parameterService->getInt('user.id');
     } 
@@ -177,7 +182,7 @@ class UserService
 }
 ```
 
-Ignore `ParameterNotFoundException` if parameter not exist. Method `get` return `null`.
+Ignore `ParameterNotFoundException` if the parameter does not exist. The `get` method returns `null`.
 
 ```php
 <?php declare(strict_types=1);
@@ -202,9 +207,9 @@ class WidgetService
 }
 ```
 
-#### 3.2 Twig extension
+#### 3.2 Twig Extension
 
-Twig functions.
+Twig functions:
 
 ```twig
 parameter_get
@@ -223,7 +228,7 @@ parameter_get_unit_enum_or_null
 parameter_has
 ```
 
-Check `debug` parameter in templates.
+Check the `debug` parameter in templates.
 
 ```twig
 {# templates/first.html.twig #}
@@ -237,7 +242,7 @@ Check `debug` parameter in templates.
 {% endif %}
 ```
 
-Get `google api` parameters.
+Get Google API parameters.
 
 ```twig
 {# templates/first.html.twig #}
