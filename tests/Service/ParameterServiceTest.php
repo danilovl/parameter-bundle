@@ -30,7 +30,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
-    #[DataProvider('dataKeyDelimiterSucceed')]
+    #[DataProvider('provideGetDelimiterSucceedCases')]
     public function testGetDelimiterSucceed(string $key, ?string $delimiter, mixed $expectedValue): void
     {
         $value = $this->parameterService->get(key: $key, delimiter: $delimiter);
@@ -70,7 +70,7 @@ class ParameterServiceTest extends TestCase
         $this->assertFalse($isExist);
     }
 
-    #[DataProvider('dataKeyStringSucceed')]
+    #[DataProvider('provideGetStringSucceedCases')]
     public function testGetStringSucceed(string $key, mixed $expectedValue): void
     {
         $string = $this->parameterService->getString($key);
@@ -86,7 +86,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($string);
     }
 
-    #[DataProvider('dataKeyStringFailed')]
+    #[DataProvider('provideGetStringFailedCases')]
     public function testGetStringFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -94,7 +94,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getString($key);
     }
 
-    #[DataProvider('dataKeyIntSucceed')]
+    #[DataProvider('provideGetIntSucceedCases')]
     public function testGetIntSucceed(string $key, mixed $expectedValue): void
     {
         $int = $this->parameterService->getInt($key);
@@ -110,7 +110,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($int);
     }
 
-    #[DataProvider('dataKeyIntFailed')]
+    #[DataProvider('provideGetIntFailedCases')]
     public function testGetIntFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -118,7 +118,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getInt($key);
     }
 
-    #[DataProvider('dataKeyFloatSucceed')]
+    #[DataProvider('provideGetFloatSucceedCases')]
     public function testGetFloatSucceed(string $key, mixed $expectedValue): void
     {
         $float = $this->parameterService->getFloat($key);
@@ -134,7 +134,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($float);
     }
 
-    #[DataProvider('dataKeyFloatFailed')]
+    #[DataProvider('provideGetFloatFailedCases')]
     public function testGetFloatFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -142,7 +142,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getFloat($key);
     }
 
-    #[DataProvider('dataKeyBooleanSucceed')]
+    #[DataProvider('provideGetBooleanSucceedCases')]
     public function testGetBooleanSucceed(string $key, mixed $expectedValue): void
     {
         $boolean = $this->parameterService->getBoolean($key);
@@ -158,7 +158,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($boolean);
     }
 
-    #[DataProvider('dataKeyBooleanFailed')]
+    #[DataProvider('provideGetBooleanFailedCases')]
     public function testGetBooleanFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -166,7 +166,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getBoolean($key);
     }
 
-    #[DataProvider('dataKeyArraySucceed')]
+    #[DataProvider('provideGetArraySucceedCases')]
     public function testGetArraySucceed(string $key, mixed $expectedValue): void
     {
         $array = $this->parameterService->getArray($key);
@@ -182,7 +182,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($array);
     }
 
-    #[DataProvider('dataKeyArrayFailed')]
+    #[DataProvider('provideGetArrayFailedCases')]
     public function testGetArrayFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -190,7 +190,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getArray($key);
     }
 
-    #[DataProvider('dataKeyEnumSucceed')]
+    #[DataProvider('provideGetEnumSucceedCases')]
     public function testGetEnumSucceed(string $key, mixed $expectedValue): void
     {
         $enum = $this->parameterService->getUnitEnum($key);
@@ -206,7 +206,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($array);
     }
 
-    #[DataProvider('dataKeyEnumFailed')]
+    #[DataProvider('provideGetEnumFailedCases')]
     public function testGetEnumFailed(string $key): void
     {
         $this->expectException(TypeError::class);
@@ -225,7 +225,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_code', 'UA-X000000'];
     }
 
-    public static function dataKeyDelimiterSucceed(): Generator
+    public static function provideGetDelimiterSucceedCases(): Generator
     {
         yield ['locale', null, 'en'];
         yield ['debug', null, false];
@@ -247,7 +247,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_codes'];
     }
 
-    public static function dataKeyStringSucceed(): Generator
+    public static function provideGetStringSucceedCases(): Generator
     {
         yield ['locale', 'en'];
         yield ['project_namespace', 'App'];
@@ -255,45 +255,45 @@ class ParameterServiceTest extends TestCase
         yield ['google.analytics_code', 'UA-X000000'];
     }
 
-    public static function dataKeyStringFailed(): Generator
+    public static function provideGetStringFailedCases(): Generator
     {
         yield ['debug'];
         yield ['pagination'];
         yield ['google'];
     }
 
-    public static function dataKeyIntSucceed(): Generator
+    public static function provideGetIntSucceedCases(): Generator
     {
         yield ['pagination.default.page', 1];
         yield ['pagination.default.limit', 25];
     }
 
-    public static function dataKeyIntFailed(): Generator
+    public static function provideGetIntFailedCases(): Generator
     {
         yield ['locale'];
         yield ['debug'];
         yield ['project_namespace'];
     }
 
-    public static function dataKeyFloatSucceed(): Generator
+    public static function provideGetFloatSucceedCases(): Generator
     {
         yield ['price', 200.00];
         yield ['volume', 0.00];
     }
 
-    public static function dataKeyFloatFailed(): Generator
+    public static function provideGetFloatFailedCases(): Generator
     {
         yield ['locale'];
         yield ['debug'];
         yield ['project_namespace'];
     }
 
-    public static function dataKeyBooleanSucceed(): Generator
+    public static function provideGetBooleanSucceedCases(): Generator
     {
         yield ['debug', self::getParameterBagData()['debug']];
     }
 
-    public static function dataKeyBooleanFailed(): Generator
+    public static function provideGetBooleanFailedCases(): Generator
     {
         yield ['locale'];
         yield ['project_namespace'];
@@ -301,13 +301,13 @@ class ParameterServiceTest extends TestCase
         yield ['google'];
     }
 
-    public static function dataKeyArraySucceed(): Generator
+    public static function provideGetArraySucceedCases(): Generator
     {
         yield ['pagination', self::getParameterBagData()['pagination']];
         yield ['google', self::getParameterBagData()['google']];
     }
 
-    public static function dataKeyArrayFailed(): Generator
+    public static function provideGetArrayFailedCases(): Generator
     {
         yield ['locale'];
         yield ['debug'];
@@ -325,13 +325,13 @@ class ParameterServiceTest extends TestCase
         yield ['google.api_key_null'];
     }
 
-    public static function dataKeyEnumSucceed(): Generator
+    public static function provideGetEnumSucceedCases(): Generator
     {
         yield ['enum_a', EnumMock::A];
         yield ['enum_b', EnumMock::B];
     }
 
-    public static function dataKeyEnumFailed(): Generator
+    public static function provideGetEnumFailedCases(): Generator
     {
         yield ['locale'];
         yield ['debug'];
