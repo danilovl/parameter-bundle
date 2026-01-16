@@ -22,7 +22,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService = new ParameterService($parameterBug);
     }
 
-    #[DataProvider('dataKeySucceed')]
+    #[DataProvider('provideGetSucceedCases')]
     public function testGetSucceed(string $key, mixed $expectedValue): void
     {
         $value = $this->parameterService->get($key);
@@ -38,7 +38,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
-    #[DataProvider('dataKeyFailed')]
+    #[DataProvider('provideDataKeyFailed')]
     public function testGetFailed(string $key): void
     {
         $this->expectException(ParameterNotFoundException::class);
@@ -46,7 +46,7 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->get($key);
     }
 
-    #[DataProvider('dataKeyFailed')]
+    #[DataProvider('provideDataKeyFailed')]
     public function testGetSucceedIgnore(string $key): void
     {
         $value = $this->parameterService->get(key: $key, ignoreNotFound: true);
@@ -54,7 +54,7 @@ class ParameterServiceTest extends TestCase
         $this->assertNull($value);
     }
 
-    #[DataProvider('dataKeySucceed')]
+    #[DataProvider('provideHasSucceedCases')]
     public function testHasSucceed(string $key): void
     {
         $isExist = $this->parameterService->has($key);
@@ -62,7 +62,7 @@ class ParameterServiceTest extends TestCase
         $this->assertTrue($isExist);
     }
 
-    #[DataProvider('dataKeyFailed')]
+    #[DataProvider('provideDataKeyFailed')]
     public function testHasFailed(string $key): void
     {
         $isExist = $this->parameterService->has($key);
@@ -78,7 +78,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $string);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetStringOrNullSucceed(string $key): void
     {
         $string = $this->parameterService->getStringOrNull($key);
@@ -102,7 +102,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $int);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetIntOrNullSucceed(string $key): void
     {
         $int = $this->parameterService->getIntOrNull($key);
@@ -126,7 +126,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $float);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetFloatOrNullSucceed(string $key): void
     {
         $float = $this->parameterService->getFloatOrNull($key);
@@ -150,7 +150,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $boolean);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetBooleanOrNullSucceed(string $key): void
     {
         $boolean = $this->parameterService->getBooleanOrNull($key);
@@ -174,7 +174,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $array);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetArrayOrNullSucceed(string $key): void
     {
         $array = $this->parameterService->getArrayOrNull($key);
@@ -198,7 +198,7 @@ class ParameterServiceTest extends TestCase
         $this->assertEquals($expectedValue, $enum);
     }
 
-    #[DataProvider('dataKeyOrNull')]
+    #[DataProvider('provideDataKeyOrNull')]
     public function testGetEnumOrNullSucceed(string $key): void
     {
         $array = $this->parameterService->getUnitEnumOrNull($key);
@@ -214,7 +214,18 @@ class ParameterServiceTest extends TestCase
         $this->parameterService->getUnitEnum($key);
     }
 
-    public static function dataKeySucceed(): Generator
+    public static function provideHasSucceedCases(): Generator
+    {
+        yield ['locale'];
+        yield ['debug'];
+        yield ['project_namespace'];
+        yield ['pagination.default.page'];
+        yield ['pagination.default.limit'];
+        yield ['google.api_key'];
+        yield ['google.analytics_code'];
+    }
+
+    public static function provideGetSucceedCases(): Generator
     {
         yield ['locale', 'en'];
         yield ['debug', false];
@@ -236,7 +247,7 @@ class ParameterServiceTest extends TestCase
         yield ['google#analytics_code', '#', 'UA-X000000'];
     }
 
-    public static function dataKeyFailed(): Generator
+    public static function provideDataKeyFailed(): Generator
     {
         yield ['locales'];
         yield ['dug'];
@@ -316,7 +327,7 @@ class ParameterServiceTest extends TestCase
         yield ['google.api_key'];
     }
 
-    public static function dataKeyOrNull(): Generator
+    public static function provideDataKeyOrNull(): Generator
     {
         yield ['locale_null'];
         yield ['debug_null'];
