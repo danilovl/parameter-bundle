@@ -34,73 +34,79 @@ class ParameterExtension extends AbstractExtension
     public function get(
         string $key,
         ?string $delimiter = null,
-        bool $ignoreNotFound = false
+        bool $ignoreNotFound = false,
+        array|bool|string|int|float|UnitEnum|null $default = null
     ): array|bool|string|int|float|UnitEnum|null {
-        return $this->parameterService->get($key, $delimiter, $ignoreNotFound);
+        return $this->parameterService->get(
+            key: $key,
+            delimiter: $delimiter,
+            ignoreNotFound: $ignoreNotFound,
+            default: $default
+        );
     }
 
-    public function getString(string $key, ?string $delimiter = null): string
+    public function getString(string $key, ?string $delimiter = null, ?string $default = null): string
     {
-        return $this->parameterService->getString($key, $delimiter);
+        return $this->parameterService->getString(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getStringOrNull(string $key, ?string $delimiter = null): ?string
+    public function getStringOrNull(string $key, ?string $delimiter = null, ?string $default = null): ?string
     {
-        return $this->parameterService->getStringOrNull($key, $delimiter);
+        return $this->parameterService->getStringOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getInt(string $key, ?string $delimiter = null): int
+    public function getInt(string $key, ?string $delimiter = null, ?int $default = null): int
     {
-        return $this->parameterService->getInt($key, $delimiter);
+        return $this->parameterService->getInt(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getIntOrNull(string $key, ?string $delimiter = null): ?int
+    public function getIntOrNull(string $key, ?string $delimiter = null, ?int $default = null): ?int
     {
-        return $this->parameterService->getIntOrNull($key, $delimiter);
+        return $this->parameterService->getIntOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getFloat(string $key, ?string $delimiter = null): float
+    public function getFloat(string $key, ?string $delimiter = null, ?float $default = null): float
     {
-        return $this->parameterService->getFloat($key, $delimiter);
+        return $this->parameterService->getFloat(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getFloatOrNull(string $key, ?string $delimiter = null): ?float
+    public function getFloatOrNull(string $key, ?string $delimiter = null, ?float $default = null): ?float
     {
-        return $this->parameterService->getFloatOrNull($key, $delimiter);
+        return $this->parameterService->getFloatOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getBoolean(string $key, ?string $delimiter = null): bool
+    public function getBoolean(string $key, ?string $delimiter = null, ?bool $default = null): bool
     {
-        return $this->parameterService->getBoolean($key, $delimiter);
+        return $this->parameterService->getBoolean(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getBooleanOrNull(string $key, ?string $delimiter = null): ?bool
+    public function getBooleanOrNull(string $key, ?string $delimiter = null, ?bool $default = null): ?bool
     {
-        return $this->parameterService->getBooleanOrNull($key, $delimiter);
+        return $this->parameterService->getBooleanOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getArray(string $key, ?string $delimiter = null): array
+    public function getArray(string $key, ?string $delimiter = null, ?array $default = null): array
     {
-        return $this->parameterService->getArray($key, $delimiter);
+        return $this->parameterService->getArray(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getArrayOrNull(string $key, ?string $delimiter = null): ?array
+    public function getArrayOrNull(string $key, ?string $delimiter = null, ?array $default = null): ?array
     {
-        return $this->parameterService->getArrayOrNull($key, $delimiter);
+        return $this->parameterService->getArrayOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getUnitEnum(string $key, ?string $delimiter = null): UnitEnum
+    public function getUnitEnum(string $key, ?string $delimiter = null, ?UnitEnum $default = null): UnitEnum
     {
-        return $this->parameterService->getUnitEnum($key, $delimiter);
+        return $this->parameterService->getUnitEnum(key: $key, delimiter: $delimiter, default: $default);
     }
 
-    public function getUnitEnumOrNull(string $key, ?string $delimiter = null): ?UnitEnum
+    public function getUnitEnumOrNull(string $key, ?string $delimiter = null, ?UnitEnum $default = null): ?UnitEnum
     {
-        return $this->parameterService->getUnitEnumOrNull($key, $delimiter);
+        return $this->parameterService->getUnitEnumOrNull(key: $key, delimiter: $delimiter, default: $default);
     }
 
     public function has(string $key, ?string $delimiter = null): bool
     {
-        return $this->parameterService->has($key, $delimiter);
+        return $this->parameterService->has(key: $key, delimiter: $delimiter);
     }
 }
