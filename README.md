@@ -9,10 +9,6 @@
 
 The Symfony bundle provides a convenient way to retrieve parameters from the configuration.
 
-### IDE Plugin
-
-There is a [PHPStorm IDE plugin](https://github.com/danilovl/parameter-bundle-plugin) available for this bundle that provides auto-completion and parameter search assistance in your IDE.
-
 ### Requirements
 
 * PHP 8.5 or higher
@@ -57,27 +53,34 @@ interface ParameterServiceInterface
 {
     public function get(
         string $key,
-        string $delimiter = null,
-        bool $ignoreNotFound = false
+        ?string $delimiter = null,
+        bool $ignoreNotFound = false,
+        array|bool|string|int|float|UnitEnum|null $default = null
     ): array|bool|string|int|float|UnitEnum|null;
 
-    public function getString(string $key, ?string $delimiter = null): string;
-    public function getStringOrNull(string $key, ?string $delimiter = null): ?string;
+    public function getString(string $key, ?string $delimiter = null, ?string $default = null): string;
 
-    public function getInt(string $key, ?string $delimiter = null): int;
-    public function getIntOrNull(string $key, ?string $delimiter = null): ?int;
+    public function getStringOrNull(string $key, ?string $delimiter = null, ?string $default = null): ?string;
 
-    public function getFloat(string $key, ?string $delimiter = null): float;
-    public function getFloatOrNull(string $key, ?string $delimiter = null): ?float;
+    public function getInt(string $key, ?string $delimiter = null, ?int $default = null): int;
 
-    public function getBoolean(string $key, ?string $delimiter = null): bool;
-    public function getBooleanOrNull(string $key, ?string $delimiter = null): ?bool;
+    public function getIntOrNull(string $key, ?string $delimiter = null, ?int $default = null): ?int;
 
-    public function getArray(string $key, ?string $delimiter = null): array;
-    public function getArrayOrNull(string $key, ?string $delimiter = null): ?array;
+    public function getFloat(string $key, ?string $delimiter = null, ?float $default = null): float;
 
-    public function getUnitEnum(string $key, ?string $delimiter = null): UnitEnum;
-    public function getUnitEnumOrNull(string $key, ?string $delimiter = null): ?UnitEnum;
+    public function getFloatOrNull(string $key, ?string $delimiter = null, ?float $default = null): ?float;
+
+    public function getBoolean(string $key, ?string $delimiter = null, ?bool $default = null): bool;
+
+    public function getBooleanOrNull(string $key, ?string $delimiter = null, ?bool $default = null): ?bool;
+
+    public function getArray(string $key, ?string $delimiter = null, ?array $default = null): array;
+
+    public function getArrayOrNull(string $key, ?string $delimiter = null, ?array $default = null): ?array;
+
+    public function getUnitEnum(string $key, ?string $delimiter = null, ?UnitEnum $default = null): UnitEnum;
+
+    public function getUnitEnumOrNull(string $key, ?string $delimiter = null, ?UnitEnum $default = null): ?UnitEnum;
 
     public function has(string $key, ?string $delimiter = null): bool;
 }
@@ -129,7 +132,7 @@ class BaseController extends AbstractController
         int $limit = null,
         array $options = null
     ): PaginationInterface {
-        $page = $page ?? $this->get(ParameterServiceInterface::class)->getInt('pagination::default::page', '::');
+        $page = $page ?? $this->get(ParameterServiceInterface::class)->getInt(key: 'pagination::default::page', delimiter: '::');
         $limit = $limit ?? $this->get(ParameterServiceInterface::class)->getInt('pagination.default.limit');
 
         $pagination = $this->get('knp_paginator');
@@ -181,16 +184,13 @@ class UserService
 }
 ```
 
-Ignore `ParameterNotFoundException` if the parameter does not exist. The `get` method returns `null`.
+Ignore `ParameterNotFoundException` if the parameter does not exist. The `get` method returns `null` or your custom default value.
 
 ```php
 <?php declare(strict_types=1);
 
 namespace App\Service;
 
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 
 class WidgetService
@@ -201,12 +201,43 @@ class WidgetService
     
     public function getWidgetName(): string
     {
-        return $this->parameterService->get(key: 'widget.name', ignoreNotFound: true) ?? 'default widget name';
+        return $this->parameterService->getString(key: 'widget.name', default: 'default widget name');
+    }
+
+    public function getWidgetVersion(): float
+    {
+        return $this->parameterService->getFloat(key: 'widget.version', default: 1.0);
+    }
+
+    public function isWidgetEnabled(): bool
+    {
+        return $this->parameterService->getBoolean(key: 'widget.enabled', default: true);
     }
 }
 ```
 
-#### 3.2 Twig Extension
+#### 3.2 Exceptions
+
+The bundle provides several custom exceptions for better error handling:
+
+- `ParameterNotFoundException` - Thrown when a parameter or a nested key is not found.
+- `EmptyParameterKeyException` - Thrown when an empty string or a string containing only whitespace is passed as a key.
+- `InvalidArgumentException` - Thrown for invalid arguments, such as an empty delimiter.
+
+```php
+use Danilovl\ParameterBundle\Exception\ParameterNotFoundException;
+use Danilovl\ParameterBundle\Exception\EmptyParameterKeyException;
+
+try {
+    $value = $this->parameterService->getString('non.existent.key');
+} catch (ParameterNotFoundException $e) {
+    // Handle missing parameter
+} catch (EmptyParameterKeyException $e) {
+    // Handle empty key
+}
+```
+
+#### 3.3 Twig Extension
 
 Twig functions:
 
@@ -241,18 +272,20 @@ Check the `debug` parameter in templates.
 {% endif %}
 ```
 
-Get Google API parameters.
+Get Google API parameters with defaults.
 
 ```twig
 {# templates/first.html.twig #}
 
-{{ parameter_get('google.api_key') }}
+{{ parameter_get('google.api_key', default='fallback_key') }}
 
-{{ parameter_get_string('google.api_key') }}
-{{ parameter_get_string('google.analytics_code') }}
+{{ parameter_get_string('google.api_key', default='fallback_key') }}
+{{ parameter_get_string('google.analytics_code', default='UA-000000') }}
 
-{{ parameter_get_int('pagination.default.page') }}
-{{ parameter_get_int('pagination.default.limit') }}
+{{ parameter_get_int('pagination.default.page', default=1) }}
+{{ parameter_get_int('pagination.default.limit', default=20) }}
+
+{{ parameter_get_boolean('debug', default=true) }}
 ```
 
 ## License

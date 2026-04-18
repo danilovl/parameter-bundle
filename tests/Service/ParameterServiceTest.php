@@ -2,13 +2,17 @@
 
 namespace Danilovl\ParameterBundle\Tests\Service;
 
+use Danilovl\ParameterBundle\Exception\{
+    EmptyParameterKeyException,
+    ParameterNotFoundException
+};
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
 use Danilovl\ParameterBundle\Service\ParameterService;
 use Danilovl\ParameterBundle\Tests\Mock\EnumMock;
 use Generator;
+use UnitEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use TypeError;
 
@@ -18,8 +22,8 @@ class ParameterServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $parameterBug = new ParameterBag($this->getParameterBagData());
-        $this->parameterService = new ParameterService($parameterBug);
+        $parameterBag = new ParameterBag($this->getParameterBagData());
+        $this->parameterService = new ParameterService($parameterBag);
     }
 
     #[DataProvider('provideGetSucceedCases')]
@@ -223,6 +227,133 @@ class ParameterServiceTest extends TestCase
         yield ['pagination.default.limit'];
         yield ['google.api_key'];
         yield ['google.analytics_code'];
+    }
+
+    public function testGetPerformanceWithManyParameters(): void
+    {
+        $largeData = [];
+        for ($i = 0; $i < 1_000; $i++) {
+            $largeData["param_$i"] = "value_$i";
+        }
+
+        $parameterBag = new ParameterBag($largeData);
+        $service = new ParameterService($parameterBag);
+
+        $start = microtime(true);
+        for ($i = 0; $i < 100; $i++) {
+            $service->get('param_500');
+        }
+        $duration = microtime(true) - $start;
+
+        $this->assertLessThan(0.1, $duration);
+    }
+
+    #[DataProvider('provideGetWithDeepNestingDefaultValueCases')]
+    public function testGetWithDeepNestingDefaultValue(string $key, array|bool|string|int|float|UnitEnum|null $default): void
+    {
+        $value = $this->parameterService->get(
+            key: $key,
+            ignoreNotFound: true,
+            default: $default
+        );
+        $this->assertEquals($default, $value);
+    }
+
+    public function testGetWithDeepNesting(): void
+    {
+        $value = $this->parameterService->get('pagination.default.page');
+        $this->assertEquals(1, $value);
+    }
+
+    public function testGetStringOrNullWithDefaultValue(): void
+    {
+        $value = $this->parameterService->getStringOrNull('nonexistent.key', default: 'default_string');
+        $this->assertEquals('default_string', $value);
+    }
+
+    public function testGetArrayWithDefaultValue(): void
+    {
+        $default = ['key' => 'value'];
+        $value = $this->parameterService->getArray('nonexistent.key', default: $default);
+
+        $this->assertEquals($default, $value);
+    }
+
+    public function testGetBooleanWithDefaultValue(): void
+    {
+        $value = $this->parameterService->getBoolean('nonexistent.key', default: true);
+
+        $this->assertTrue($value);
+    }
+
+    public function testGetFloatWithDefaultValue(): void
+    {
+        $value = $this->parameterService->getFloat('nonexistent.key', default: 3.14);
+
+        $this->assertEquals(3.14, $value);
+    }
+
+    public function testGetIntWithDefaultValue(): void
+    {
+        $value = $this->parameterService->getInt('nonexistent.key', default: 42);
+
+        $this->assertEquals(42, $value);
+    }
+
+    public function testGetStringWithDefaultValue(): void
+    {
+        $value = $this->parameterService->getString('nonexistent.key', default: 'fallback_value');
+
+        $this->assertEquals('fallback_value', $value);
+    }
+
+    #[DataProvider('provideGetWithDefaultValueCases')]
+    public function testGetWithDefaultValue(string $key, array|bool|string|int|float|UnitEnum|null $default, mixed $expectedValue): void
+    {
+        $value = $this->parameterService->get(
+            key: $key,
+            ignoreNotFound: true,
+            default: $default
+        );
+
+        $this->assertEquals($expectedValue, $value);
+    }
+
+    public function testGetStringWithEmptyKeyThrowsException(): void
+    {
+        $this->expectException(EmptyParameterKeyException::class);
+
+        $this->parameterService->getString('');
+    }
+
+    public function testGetWithWhitespaceKeyThrowsException(): void
+    {
+        $this->expectException(EmptyParameterKeyException::class);
+
+        $this->parameterService->get('   ');
+    }
+
+    public function testGetWithEmptyKeyThrowsException(): void
+    {
+        $this->expectException(EmptyParameterKeyException::class);
+        $this->parameterService->get('');
+    }
+
+    public static function provideGetWithDeepNestingDefaultValueCases(): Generator
+    {
+        yield 'deeply nested string' => ['very.deep.nested.key', 'default'];
+        yield 'deeply nested int' => ['very.deep.nested.key', 0];
+        yield 'deeply nested array' => ['very.deep.nested.key', []];
+    }
+
+    public static function provideGetWithDefaultValueCases(): Generator
+    {
+        yield 'string default' => ['nonexistent.key', 'default_value', 'default_value'];
+        yield 'int default' => ['nonexistent.key', 42, 42];
+        yield 'float default' => ['nonexistent.key', 3.14, 3.14];
+        yield 'bool default' => ['nonexistent.key', true, true];
+        yield 'array default' => ['nonexistent.key', ['a' => 'b'], ['a' => 'b']];
+        yield 'null default' => ['nonexistent.key', null, null];
     }
 
     public static function provideGetSucceedCases(): Generator

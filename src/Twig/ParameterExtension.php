@@ -31,8 +31,11 @@ class ParameterExtension extends AbstractExtension
         ];
     }
 
-    public function get(string $key, ?string $delimiter = null, bool $ignoreNotFound = false): mixed
-    {
+    public function get(
+        string $key,
+        ?string $delimiter = null,
+        bool $ignoreNotFound = false
+    ): array|bool|string|int|float|UnitEnum|null {
         return $this->parameterService->get($key, $delimiter, $ignoreNotFound);
     }
 
