@@ -9,6 +9,10 @@
 
 The Symfony bundle provides a convenient way to retrieve parameters from the configuration.
 
+### IDE Plugin
+
+There is a [PHPStorm IDE plugin](https://github.com/danilovl/parameter-bundle-plugin) available for this bundle that provides auto-completion and parameter search assistance in your IDE.
+
 ### Requirements
 
 * PHP 8.5 or higher
