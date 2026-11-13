@@ -5,6 +5,7 @@ namespace Danilovl\ParameterBundle\Service;
 use Danilovl\ParameterBundle\Exception\{
     EmptyParameterKeyException,
     InvalidArgumentException,
+    ParameterCastException,
     ParameterNotFoundException
 };
 use Danilovl\ParameterBundle\Interfaces\ParameterServiceInterface;
@@ -43,18 +44,28 @@ readonly class ParameterService implements ParameterServiceInterface
             return $ignoreNotFound ? $default : throw new ParameterNotFoundException($keys[0]);
         }
 
-        array_shift($keys);
+        $parentKeys = [array_shift($keys)];
 
         if (empty($keys)) {
             return $configs;
         }
 
         foreach ($keys as $nestedKey) {
-            if (isset($configs[$nestedKey])) {
-                $configs = $configs[$nestedKey];
-            } else {
-                return $ignoreNotFound ? $default : throw new ParameterNotFoundException(key: $nestedKey, previousKey: $keys[0]);
+            if (!is_array($configs) || !isset($configs[$nestedKey])) {
+                $previousKey = implode($delimiter, $parentKeys);
+
+                return $ignoreNotFound ? $default : throw new ParameterNotFoundException(key: $nestedKey, previousKey: $previousKey);
             }
+
+            $configs = $configs[$nestedKey];
+            $parentKeys[] = $nestedKey;
+        }
+
+        $isParameterValue = is_scalar($configs) || is_array($configs) || $configs instanceof UnitEnum;
+        if (!$isParameterValue) {
+            $message = sprintf('Parameter "%s" has unsupported value type "%s".', $key, get_debug_type($configs));
+
+            throw new InvalidArgumentException($message);
         }
 
         return $configs;
@@ -80,124 +91,158 @@ readonly class ParameterService implements ParameterServiceInterface
 
     public function getString(string $key, ?string $delimiter = null, ?string $default = null): string
     {
-        /** @var string $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: $default !== null,
             default: $default
         );
+
+        if (!is_string($result)) {
+            throw new ParameterCastException($key, 'string', $result);
+        }
 
         return $result;
     }
 
     public function getStringOrNull(string $key, ?string $delimiter = null, ?string $default = null): ?string
     {
-        /** @var string|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: true,
             default: $default
         );
+
+        if ($result !== null && !is_string($result)) {
+            throw new ParameterCastException($key, 'string', $result);
+        }
 
         return $result;
     }
 
     public function getInt(string $key, ?string $delimiter = null, ?int $default = null): int
     {
-        /** @var int $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: $default !== null,
             default: $default
         );
+
+        if (!is_int($result)) {
+            throw new ParameterCastException($key, 'int', $result);
+        }
 
         return $result;
     }
 
     public function getIntOrNull(string $key, ?string $delimiter = null, ?int $default = null): ?int
     {
-        /** @var int|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: true,
             default: $default
         );
+
+        if ($result !== null && !is_int($result)) {
+            throw new ParameterCastException($key, 'int', $result);
+        }
 
         return $result;
     }
 
     public function getFloat(string $key, ?string $delimiter = null, ?float $default = null): float
     {
-        /** @var float $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: $default !== null,
             default: $default
         );
+
+        if (is_int($result)) {
+            $result = (float) $result;
+        }
+
+        if (!is_float($result)) {
+            throw new ParameterCastException($key, 'float', $result);
+        }
 
         return $result;
     }
 
     public function getFloatOrNull(string $key, ?string $delimiter = null, ?float $default = null): ?float
     {
-        /** @var float|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: true,
             default: $default
         );
+
+        if (is_int($result)) {
+            $result = (float) $result;
+        }
+
+        if ($result !== null && !is_float($result)) {
+            throw new ParameterCastException($key, 'float', $result);
+        }
 
         return $result;
     }
 
     public function getBoolean(string $key, ?string $delimiter = null, ?bool $default = null): bool
     {
-        /** @var boolean $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: $default !== null,
             default: $default
         );
+
+        if (!is_bool($result)) {
+            throw new ParameterCastException($key, 'bool', $result);
+        }
 
         return $result;
     }
 
     public function getBooleanOrNull(string $key, ?string $delimiter = null, ?bool $default = null): ?bool
     {
-        /** @var boolean|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: true,
             default: $default
         );
+
+        if ($result !== null && !is_bool($result)) {
+            throw new ParameterCastException($key, 'bool', $result);
+        }
 
         return $result;
     }
 
     public function getArray(string $key, ?string $delimiter = null, ?array $default = null): array
     {
-        /** @var array $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: $default !== null,
             default: $default
         );
+
+        if (!is_array($result)) {
+            throw new ParameterCastException($key, 'array', $result);
+        }
 
         return $result;
     }
 
     public function getArrayOrNull(string $key, ?string $delimiter = null, ?array $default = null): ?array
     {
-        /** @var array|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
@@ -205,12 +250,15 @@ readonly class ParameterService implements ParameterServiceInterface
             default: $default
         );
 
+        if ($result !== null && !is_array($result)) {
+            throw new ParameterCastException($key, 'array', $result);
+        }
+
         return $result;
     }
 
     public function getUnitEnum(string $key, ?string $delimiter = null, ?UnitEnum $default = null): UnitEnum
     {
-        /** @var UnitEnum $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
@@ -218,18 +266,25 @@ readonly class ParameterService implements ParameterServiceInterface
             default: $default
         );
 
+        if (!$result instanceof UnitEnum) {
+            throw new ParameterCastException($key, 'UnitEnum', $result);
+        }
+
         return $result;
     }
 
     public function getUnitEnumOrNull(string $key, ?string $delimiter = null, ?UnitEnum $default = null): ?UnitEnum
     {
-        /** @var UnitEnum|null $result */
         $result = $this->get(
             key: $key,
             delimiter: $delimiter,
             ignoreNotFound: true,
             default: $default
         );
+
+        if ($result !== null && !$result instanceof UnitEnum) {
+            throw new ParameterCastException($key, 'UnitEnum', $result);
+        }
 
         return $result;
     }

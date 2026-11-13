@@ -15,6 +15,7 @@ class ParameterCastException extends TypeError
             $expectedType,
             $actualType
         );
+
         parent::__construct($message);
     }
 }
